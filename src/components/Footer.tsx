@@ -20,7 +20,7 @@ export default function Footer() {
           <div className='space-y-4'>
             <div className='flex items-center space-x-4'>
               <img
-                src='/nlslogo5.png'
+                src='/nlslogo4.png'
                 alt='Noble Life Sciences Logo'
                 className='h-16 w-16 object-contain'
               />

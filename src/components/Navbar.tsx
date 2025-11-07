@@ -23,7 +23,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href='/' className='flex items-center space-x-4'>
             <img
-              src='/nlslogo5.png'
+              src='/nlslogo4.png'
               alt='Noble Life Sciences Logo'
               className='h-16 w-16 md:h-20 md:w-20 object-contain'
             />
