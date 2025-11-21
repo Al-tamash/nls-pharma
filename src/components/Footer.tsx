@@ -138,16 +138,18 @@ export default function Footer() {
                 <MapPin className='h-5 w-5 mt-0.5 flex-shrink-0' />
                 <div>
                   <p className='text-sm text-primary-foreground/80'>
-                    Jeedimetla, Hyderabad
+                    Plot No.260, S.V Cooperative Society
                     <br />
-                    Telangana, India
+                    IDA-Jeedimetla, Hyderabad-500055
+                    <br />
+                    Telangana-India
                   </p>
                 </div>
               </div>
               <div className='flex items-center space-x-3'>
                 <Phone className='h-5 w-5 flex-shrink-0' />
                 <p className='text-sm text-primary-foreground/80'>
-                  +91 98765 43210
+                  +91 99129 24272
                 </p>
               </div>
               <div className='flex items-center space-x-3'>

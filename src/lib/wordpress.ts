@@ -1,12 +1,12 @@
-import { Product, ProductCategory, CompanyInfo } from '@/types/product';
+import { Product, ProductCategory, CompanyInfo } from '@/types/product'
 
-const WP_URL = process.env.NEXT_PUBLIC_WP_URL;
+const WP_URL = process.env.NEXT_PUBLIC_WP_URL
 
 export async function getProducts(): Promise<Product[]> {
   // Return mock products if WordPress URL is not configured
   if (!WP_URL) {
-    console.log('Using mock products (WordPress URL not configured)');
-    return getMockProducts();
+    console.log('Using mock products (WordPress URL not configured)')
+    return getMockProducts()
   }
 
   try {
@@ -15,21 +15,21 @@ export async function getProducts(): Promise<Product[]> {
       headers: {
         'Content-Type': 'application/json',
       },
-    };
+    }
 
     // Only add cache options in server environment
     if (typeof window === 'undefined') {
-      (fetchOptions as any).next = { revalidate: 120 };
+      ;(fetchOptions as any).next = { revalidate: 120 }
     }
 
-    const res = await fetch(`${WP_URL}/wp-json/wp/v2/products`, fetchOptions);
+    const res = await fetch(`${WP_URL}/wp-json/wp/v2/products`, fetchOptions)
 
     if (!res.ok) {
-      console.warn('Failed to fetch products from WordPress, using mock data');
-      return getMockProducts();
+      console.warn('Failed to fetch products from WordPress, using mock data')
+      return getMockProducts()
     }
 
-    const products = await res.json();
+    const products = await res.json()
     return products.map((product: any) => ({
       id: product.id,
       title: {
@@ -44,33 +44,38 @@ export async function getProducts(): Promise<Product[]> {
       slug: product.slug,
       status: product.status,
       type: product.type,
-    }));
+    }))
   } catch (error) {
-    console.warn('WordPress fetch failed, using mock data:', error);
-    return getMockProducts();
+    console.warn('WordPress fetch failed, using mock data:', error)
+    return getMockProducts()
   }
 }
 
-export async function getProductsByCategory(category: string): Promise<Product[]> {
+export async function getProductsByCategory(
+  category: string
+): Promise<Product[]> {
   // If WordPress is not configured, filter mock products
   if (!WP_URL) {
-    const mockProducts = getMockProducts();
-    return mockProducts.filter(product => {
-      const productCategory = product.meta.category.toLowerCase();
-      const categorySlug = category.toLowerCase();
-      
+    const mockProducts = getMockProducts()
+    return mockProducts.filter((product) => {
+      const productCategory = product.meta.category.toLowerCase()
+      const categorySlug = category.toLowerCase()
+
       if (categorySlug === 'solvents') {
-        return productCategory === 'solvent' || productCategory === 'solvents';
+        return productCategory === 'solvent' || productCategory === 'solvents'
       }
       if (categorySlug === 'intermediates') {
-        return productCategory === 'intermediate' || productCategory === 'intermediates';
+        return (
+          productCategory === 'intermediate' ||
+          productCategory === 'intermediates'
+        )
       }
       if (categorySlug === 'apis') {
-        return productCategory === 'api' || productCategory === 'apis';
+        return productCategory === 'api' || productCategory === 'apis'
       }
-      
-      return productCategory === categorySlug;
-    });
+
+      return productCategory === categorySlug
+    })
   }
 
   try {
@@ -78,20 +83,25 @@ export async function getProductsByCategory(category: string): Promise<Product[]
       headers: {
         'Content-Type': 'application/json',
       },
-    };
+    }
 
     if (typeof window === 'undefined') {
-      (fetchOptions as any).next = { revalidate: 120 };
+      ;(fetchOptions as any).next = { revalidate: 120 }
     }
 
-    const res = await fetch(`${WP_URL}/wp-json/wp/v2/products?category=${category}`, fetchOptions);
+    const res = await fetch(
+      `${WP_URL}/wp-json/wp/v2/products?category=${category}`,
+      fetchOptions
+    )
 
     if (!res.ok) {
-      console.warn('Failed to fetch products by category, returning empty array');
-      return [];
+      console.warn(
+        'Failed to fetch products by category, returning empty array'
+      )
+      return []
     }
 
-    const products = await res.json();
+    const products = await res.json()
     return products.map((product: any) => ({
       id: product.id,
       title: {
@@ -106,10 +116,10 @@ export async function getProductsByCategory(category: string): Promise<Product[]
       slug: product.slug,
       status: product.status,
       type: product.type,
-    }));
+    }))
   } catch (error) {
-    console.warn('Error fetching products by category:', error);
-    return [];
+    console.warn('Error fetching products by category:', error)
+    return []
   }
 }
 
@@ -118,15 +128,17 @@ export async function getCompanyInfo(): Promise<CompanyInfo> {
     name: 'M/s Noble Life Sciences',
     established: '2015',
     owner: 'Mr. P. Vinod Kumar',
-    description: 'Leading manufacturer of Intermediates for APIs and trader of Chemicals & Solvents',
-    address: 'Jeedimetla, Hyderabad, Telangana, India',
-    phone: '+91 98765 43210',
+    description:
+      'Leading manufacturer of Intermediates for APIs and trader of Chemicals & Solvents',
+    address:
+      'Plot No.260, S.V Cooperative Society, IDA-Jeedimetla, Hyderabad-500055, Telangana-India',
+    phone: '+91 99129 24272',
     email: 'info@noblels.com',
     location: {
       lat: 17.5449,
       lng: 78.4889,
     },
-  };
+  }
 }
 
 export function getProductCategories(products?: Product[]): ProductCategory[] {
@@ -134,7 +146,8 @@ export function getProductCategories(products?: Product[]): ProductCategory[] {
     {
       name: 'Solvents',
       slug: 'solvents',
-      description: 'High-quality chemical solvents for pharmaceutical applications',
+      description:
+        'High-quality chemical solvents for pharmaceutical applications',
     },
     {
       name: 'Intermediates',
@@ -146,26 +159,29 @@ export function getProductCategories(products?: Product[]): ProductCategory[] {
       slug: 'apis',
       description: 'Active Pharmaceutical Ingredients',
     },
-  ];
+  ]
 
   // If products array is provided, calculate actual counts
   if (products && products.length > 0) {
-    return categories.map(category => ({
+    return categories.map((category) => ({
       ...category,
-      count: products.filter(product => {
-        const productCategory = product.meta.category.toLowerCase();
+      count: products.filter((product) => {
+        const productCategory = product.meta.category.toLowerCase()
         if (category.slug === 'solvents') {
-          return productCategory === 'solvent' || productCategory === 'solvents';
+          return productCategory === 'solvent' || productCategory === 'solvents'
         }
         if (category.slug === 'intermediates') {
-          return productCategory === 'intermediate' || productCategory === 'intermediates';
+          return (
+            productCategory === 'intermediate' ||
+            productCategory === 'intermediates'
+          )
         }
         if (category.slug === 'apis') {
-          return productCategory === 'api' || productCategory === 'apis';
+          return productCategory === 'api' || productCategory === 'apis'
         }
-        return productCategory === category.slug;
-      }).length
-    }));
+        return productCategory === category.slug
+      }).length,
+    }))
   }
 
   // Default counts for mock data
@@ -173,7 +189,8 @@ export function getProductCategories(products?: Product[]): ProductCategory[] {
     {
       name: 'Solvents',
       slug: 'solvents',
-      description: 'High-quality chemical solvents for pharmaceutical applications',
+      description:
+        'High-quality chemical solvents for pharmaceutical applications',
       count: 15,
     },
     {
@@ -188,7 +205,7 @@ export function getProductCategories(products?: Product[]): ProductCategory[] {
       description: 'Active Pharmaceutical Ingredients',
       count: 10,
     },
-  ];
+  ]
 }
 
 // Mock data for development
@@ -718,6 +735,33 @@ function getMockProducts(): Product[] {
       type: 'product',
     },
 
+    {
+      id: 56,
+      title: { rendered: 'N butyl Acetate' },
+      meta: {
+        product_name: 'N butyl Acetate',
+        end_product: 'Pharmaceutical / industrial solvent',
+        cas_number: '123-86-4',
+        category: 'Solvent',
+      },
+      slug: 'n-butyl-acetate',
+      status: 'publish',
+      type: 'product',
+    },
+    {
+      id: 57,
+      title: { rendered: 'N propyl Acetate' },
+      meta: {
+        product_name: 'N propyl Acetate',
+        end_product: 'Pharmaceutical / industrial solvent',
+        cas_number: '109-60-4',
+        category: 'Solvent',
+      },
+      slug: 'n-propyl-acetate',
+      status: 'publish',
+      type: 'product',
+    },
+
     // APIs (10 products)
     {
       id: 46,
@@ -849,5 +893,5 @@ function getMockProducts(): Product[] {
       status: 'publish',
       type: 'product',
     },
-  ];
+  ]
 }

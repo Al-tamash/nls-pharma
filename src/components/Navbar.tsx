@@ -19,19 +19,19 @@ export default function Navbar() {
   return (
     <header className='sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60'>
       <div className='container mx-auto px-4'>
-        <div className='flex h-24 items-center justify-between'>
+        <div className='flex h-16 md:h-20 lg:h-24 items-center justify-between'>
           {/* Logo */}
           <Link href='/' className='flex items-center space-x-4'>
             <img
               src='/nlslogo4.png'
               alt='Noble Life Sciences Logo'
-              className='h-16 w-16 md:h-20 md:w-20 object-contain'
+              className='h-10 w-10 sm:h-14 sm:w-14 md:h-20 md:w-20 object-contain'
             />
-            <div className='hidden sm:block'>
-              <h1 className='text-2xl font-bold text-foreground'>
+            <div className='flex flex-col'>
+              <h1 className='text-lg font-semibold text-foreground sm:text-2xl'>
                 Noble Life Sciences
               </h1>
-              <p className='text-base text-muted-foreground'>
+              <p className='text-xs text-muted-foreground sm:text-base'>
                 Pharmaceutical Excellence
               </p>
             </div>
@@ -54,7 +54,7 @@ export default function Navbar() {
           <div className='hidden lg:flex items-center space-x-4'>
             <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
               <Phone className='h-4 w-4' />
-              <span>+91 98765 43210</span>
+              <span>+91 99129 24272</span>
             </div>
             <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
               <Mail className='h-4 w-4' />
@@ -74,18 +74,18 @@ export default function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side='right' className='w-[300px] sm:w-[400px]'>
-              <div className='flex flex-col space-y-4 mt-8'>
-                <Link href='/' className='flex items-center space-x-4'>
+              <div className='flex flex-col space-y-6 mt-6'>
+                <Link href='/' className='flex items-center space-x-3'>
                   <img
                     src='/nlslogo4.png'
                     alt='Noble Life Sciences Logo'
-                    className='h-16 w-16 object-contain'
+                    className='h-12 w-12 object-contain'
                   />
                   <div>
-                    <h1 className='text-2xl font-bold text-foreground'>
+                    <h1 className='text-xl font-semibold text-foreground'>
                       Noble Life Sciences
                     </h1>
-                    <p className='text-base text-muted-foreground'>
+                    <p className='text-sm text-muted-foreground'>
                       Pharmaceutical Excellence
                     </p>
                   </div>
@@ -107,7 +107,7 @@ export default function Navbar() {
                 <div className='flex flex-col space-y-3 pt-4 border-t'>
                   <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
                     <Phone className='h-4 w-4' />
-                    <span>+91 98765 43210</span>
+                    <span>+91 99129 24272</span>
                   </div>
                   <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
                     <Mail className='h-4 w-4' />

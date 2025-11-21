@@ -1,6 +1,6 @@
-import { Product, ProductCategory, CompanyInfo } from '@/types/product';
+import { Product, ProductCategory, CompanyInfo } from '@/types/product'
 
-const WP_URL = process.env.NEXT_PUBLIC_WP_URL || 'https://cms.noblels.com';
+const WP_URL = process.env.NEXT_PUBLIC_WP_URL || 'https://cms.noblels.com'
 
 export async function getProducts(): Promise<Product[]> {
   try {
@@ -9,14 +9,14 @@ export async function getProducts(): Promise<Product[]> {
       headers: {
         'Content-Type': 'application/json',
       },
-    });
+    })
 
     if (!res.ok) {
-      console.error('Failed to fetch products:', res.status, res.statusText);
-      return getMockProducts();
+      console.error('Failed to fetch products:', res.status, res.statusText)
+      return getMockProducts()
     }
 
-    const products = await res.json();
+    const products = await res.json()
     return products.map((product: any) => ({
       id: product.id,
       title: {
@@ -31,24 +31,29 @@ export async function getProducts(): Promise<Product[]> {
       slug: product.slug,
       status: product.status,
       type: product.type,
-    }));
+    }))
   } catch (error) {
-    console.error('Error fetching products:', error);
-    return getMockProducts();
+    console.error('Error fetching products:', error)
+    return getMockProducts()
   }
 }
 
-export async function getProductsByCategory(category: string): Promise<Product[]> {
+export async function getProductsByCategory(
+  category: string
+): Promise<Product[]> {
   try {
-    const res = await fetch(`${WP_URL}/wp-json/wp/v2/products?category=${category}`, {
-      next: { revalidate: 120 },
-    });
+    const res = await fetch(
+      `${WP_URL}/wp-json/wp/v2/products?category=${category}`,
+      {
+        next: { revalidate: 120 },
+      }
+    )
 
     if (!res.ok) {
-      return [];
+      return []
     }
 
-    const products = await res.json();
+    const products = await res.json()
     return products.map((product: any) => ({
       id: product.id,
       title: {
@@ -63,10 +68,10 @@ export async function getProductsByCategory(category: string): Promise<Product[]
       slug: product.slug,
       status: product.status,
       type: product.type,
-    }));
+    }))
   } catch (error) {
-    console.error('Error fetching products by category:', error);
-    return [];
+    console.error('Error fetching products by category:', error)
+    return []
   }
 }
 
@@ -75,15 +80,17 @@ export async function getCompanyInfo(): Promise<CompanyInfo> {
     name: 'M/s Noble Life Sciences',
     established: '2015',
     owner: 'Mr. P. Vinod Kumar',
-    description: 'Leading manufacturer of Intermediates for APIs and trader of Chemicals & Solvents',
-    address: 'Jeedimetla, Hyderabad, Telangana, India',
-    phone: '+91 98765 43210',
+    description:
+      'Leading manufacturer of Intermediates for APIs and trader of Chemicals & Solvents',
+    address:
+      'Plot No.260, S.V Cooperative Society, IDA-Jeedimetla, Hyderabad-500055, Telangana-India',
+    phone: '+91 99129 24272',
     email: 'info@noblels.com',
     location: {
       lat: 17.5449,
       lng: 78.4889,
     },
-  };
+  }
 }
 
 export function getProductCategories(): ProductCategory[] {
@@ -91,7 +98,8 @@ export function getProductCategories(): ProductCategory[] {
     {
       name: 'Solvents',
       slug: 'solvents',
-      description: 'High-quality chemical solvents for pharmaceutical applications',
+      description:
+        'High-quality chemical solvents for pharmaceutical applications',
       count: 15,
     },
     {
@@ -106,7 +114,7 @@ export function getProductCategories(): ProductCategory[] {
       description: 'Active Pharmaceutical Ingredients',
       count: 10,
     },
-  ];
+  ]
 }
 
 // Mock data for development
@@ -177,5 +185,5 @@ function getMockProducts(): Product[] {
       status: 'publish',
       type: 'product',
     },
-  ];
+  ]
 }
