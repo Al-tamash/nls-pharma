@@ -146,12 +146,12 @@ export async function getCompanyInfo(): Promise<CompanyInfo> {
 
 export function getProductCategories(products?: Product[]): ProductCategory[] {
   const categories = [
-    // {
-    //   name: 'Solvents',
-    //   slug: 'solvents',
-    //   description:
-    //     'High-quality chemical solvents for pharmaceutical applications',
-    // },
+    {
+      name: 'Solvents',
+      slug: 'solvents',
+      description:
+        'High-quality chemical solvents for pharmaceutical applications',
+    },
     {
       name: 'Intermediates',
       slug: 'intermediates',
@@ -189,13 +189,13 @@ export function getProductCategories(products?: Product[]): ProductCategory[] {
 
   // Default counts for mock data
   return [
-    // {
-    //   name: 'Solvents',
-    //   slug: 'solvents',
-    //   description:
-    //     'High-quality chemical solvents for pharmaceutical applications',
-    //   count: 15,
-    // },
+    {
+      name: 'Solvents',
+      slug: 'solvents',
+      description:
+        'High-quality chemical solvents for pharmaceutical applications',
+      count: 8,
+    },
     {
       name: 'Intermediates',
       slug: 'intermediates',
@@ -330,6 +330,112 @@ function getMockProducts(): Product[] {
       type: 'product',
     },
 
+    // solovents (8 products )
+
+    {
+      id: 9,
+      title: { rendered: 'Di methyl formamide' },
+      meta: {
+        product_name: 'Di methyl formamide',
+        end_product: '',
+        cas_number: '',
+        category: 'Solvent',
+      },
+      slug: 'di-methyl-formamide',
+      status: 'publish',
+      type: 'product',
+    },
+    {
+      id: 10,
+      title: { rendered: 'Methylene Chloride' },
+      meta: {
+        product_name: 'Methylene Chloride',
+        end_product: '',
+        cas_number: '',
+        category: 'Solvent',
+      },
+      slug: 'methylene-chloride',
+      status: 'publish',
+      type: 'product',
+    },
+    {
+      id: 11,
+      title: { rendered: 'Chloroform' },
+      meta: {
+        product_name: 'Chloroform',
+        end_product: '',
+        cas_number: '',
+        category: 'Solvent',
+      },
+      slug: 'chloroform',
+      status: 'publish',
+      type: 'product',
+    },
+    {
+      id: 12,
+      title: { rendered: 'N Methyl Piprazine' },
+      meta: {
+        product_name: 'N Methyl Piprazine',
+        end_product: '',
+        cas_number: '',
+        category: 'Solvent',
+      },
+      slug: 'n-methyl-piprazine',
+      status: 'publish',
+      type: 'product',
+    },
+    {
+      id: 13,
+      title: { rendered: 'Nitro Methane' },
+      meta: {
+        product_name: 'Nitro Methane',
+        end_product: '',
+        cas_number: '',
+        category: 'Solvent',
+      },
+      slug: 'nitro-methane',
+      status: 'publish',
+      type: 'product',
+    },
+    {
+      id: 14,
+      title: { rendered: 'N butyl Acetate' },
+      meta: {
+        product_name: 'N butyl Acetate',
+        end_product: '',
+        cas_number: '',
+        category: 'Solvent',
+      },
+      slug: 'n-butyl-acetate',
+      status: 'publish',
+      type: 'product',
+    },
+    {
+      id: 15,
+      title: { rendered: 'N propyl Acetate' },
+      meta: {
+        product_name: 'N propyl Acetate',
+        end_product: '',
+        cas_number: '',
+        category: 'Solvent',
+      },
+      slug: 'n-propyl-acetate',
+      status: 'publish',
+      type: 'product',
+    },
+    {
+      id: 16,
+      title: { rendered: 'Ethyl Acetate' },
+      meta: {
+        product_name: 'Ethyl Acetate',
+        end_product: '',
+        cas_number: '',
+        category: 'Solvent',
+      },
+      slug: 'ethyl-acetate',
+      status: 'publish',
+      type: 'product',
+    },
     // // Solvents (15 products)
     // {
     //   id: 31,
