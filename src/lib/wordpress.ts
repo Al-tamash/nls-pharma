@@ -30,21 +30,24 @@ export async function getProducts(): Promise<Product[]> {
     }
 
     const products = await res.json()
-    return products.map((product: any) => ({
-      id: product.id,
-      title: {
-        rendered: product.title.rendered,
-      },
-      meta: {
-        product_name: product.meta?.product_name || product.title.rendered,
-        end_product: product.meta?.end_product || 'N/A',
-        cas_number: product.meta?.cas_number || 'N/A',
-        category: product.meta?.category || 'Intermediate',
-      },
-      slug: product.slug,
-      status: product.status,
-      type: product.type,
-    }))
+    return products.map((product: any) => {
+      const acf = product.acf || {}
+      return {
+        id: product.id,
+        title: {
+          rendered: product.title?.rendered || '',
+        },
+        meta: {
+          product_name: acf.product_name || product.title?.rendered || '',
+          end_product: acf.end_product || 'N/A',
+          cas_number: acf.cas_number || 'N/A', // Make sure this line is correct
+          category: acf.category || 'Uncategorized',
+        },
+        slug: product.slug,
+        status: product.status,
+        type: product.type,
+      }
+    })
   } catch (error) {
     console.warn('WordPress fetch failed, using mock data:', error)
     return getMockProducts()
@@ -143,12 +146,12 @@ export async function getCompanyInfo(): Promise<CompanyInfo> {
 
 export function getProductCategories(products?: Product[]): ProductCategory[] {
   const categories = [
-    {
-      name: 'Solvents',
-      slug: 'solvents',
-      description:
-        'High-quality chemical solvents for pharmaceutical applications',
-    },
+    // {
+    //   name: 'Solvents',
+    //   slug: 'solvents',
+    //   description:
+    //     'High-quality chemical solvents for pharmaceutical applications',
+    // },
     {
       name: 'Intermediates',
       slug: 'intermediates',
@@ -186,24 +189,24 @@ export function getProductCategories(products?: Product[]): ProductCategory[] {
 
   // Default counts for mock data
   return [
-    {
-      name: 'Solvents',
-      slug: 'solvents',
-      description:
-        'High-quality chemical solvents for pharmaceutical applications',
-      count: 15,
-    },
+    // {
+    //   name: 'Solvents',
+    //   slug: 'solvents',
+    //   description:
+    //     'High-quality chemical solvents for pharmaceutical applications',
+    //   count: 15,
+    // },
     {
       name: 'Intermediates',
       slug: 'intermediates',
       description: 'API intermediates for pharmaceutical manufacturing',
-      count: 25,
+      count: 8,
     },
     {
       name: 'APIs',
       slug: 'apis',
       description: 'Active Pharmaceutical Ingredients',
-      count: 10,
+      count: 5,
     },
   ]
 }
@@ -211,15 +214,15 @@ export function getProductCategories(products?: Product[]): ProductCategory[] {
 // Mock data for development
 function getMockProducts(): Product[] {
   return [
-    // Intermediates (25 products)
+    // Intermediates (8 products)
     {
       id: 1,
       title: { rendered: '3-Acetyl Pyridine' },
       meta: {
         product_name: '3-Acetyl Pyridine',
-        end_product: 'Imatinib & Nilotinib',
         cas_number: '350-03-8',
         category: 'Intermediate',
+        end_product: 'Imatinib & Nilotinib',
       },
       slug: '3-acetyl-pyridine',
       status: 'publish',
@@ -230,9 +233,9 @@ function getMockProducts(): Product[] {
       title: { rendered: 'Methyl Nicotinate' },
       meta: {
         product_name: 'Methyl Nicotinate',
-        end_product: 'Imatinib',
         cas_number: '93-60-7',
         category: 'Intermediate',
+        end_product: 'Various APIs',
       },
       slug: 'methyl-nicotinate',
       status: 'publish',
@@ -240,658 +243,438 @@ function getMockProducts(): Product[] {
     },
     {
       id: 3,
-      title: { rendered: '2-Chloro-6-methoxy-pyridine' },
+      title: { rendered: '1-[2-Methyl-5-Nitrophenyl] Guanidine Nitrate' },
       meta: {
-        product_name: '2-Chloro-6-methoxy-pyridine',
-        end_product: 'Various APIs',
-        cas_number: '55305-95-8',
+        product_name: '1-[2-Methyl-5-Nitrophenyl] Guanidine Nitrate',
+        cas_number: '152460-08-7',
         category: 'Intermediate',
+        end_product: 'Imatinib',
       },
-      slug: '2-chloro-6-methoxy-pyridine',
+      slug: '1-[2-methyl-5-nitrophenyl] guanidine nitrate',
       status: 'publish',
       type: 'product',
     },
     {
-      id: 7,
+      id: 4,
       title: { rendered: '4-Aminopyridine' },
       meta: {
         product_name: '4-Aminopyridine',
-        end_product: 'Pharmaceutical intermediates',
-        cas_number: '504-64-5',
+        cas_number: '873-74-5',
         category: 'Intermediate',
+        end_product: 'Dabigatran',
       },
       slug: '4-aminopyridine',
       status: 'publish',
       type: 'product',
     },
     {
-      id: 8,
-      title: { rendered: '2-Aminopyridine' },
+      id: 5,
+      title: { rendered: '1-Hydroxybenzotriazole Anhydrous (HOBT)' },
       meta: {
-        product_name: '2-Aminopyridine',
-        end_product: 'Drug synthesis',
+        product_name: '1-Hydroxybenzotriazole Anhydrous (HOBT)',
         cas_number: '504-64-5',
         category: 'Intermediate',
-      },
-      slug: '2-aminopyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 11,
-      title: { rendered: '3-Hydroxy Pyridine' },
-      meta: {
-        product_name: '3-Hydroxy Pyridine',
-        end_product: 'Vitamin B6 synthesis',
-        cas_number: '581-31-1',
-        category: 'Intermediate',
-      },
-      slug: '3-hydroxy-pyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 12,
-      title: { rendered: '4-Chloropyrimidine' },
-      meta: {
-        product_name: '4-Chloropyrimidine',
-        end_product: 'Antiviral drugs',
-        cas_number: '497-23-4',
-        category: 'Intermediate',
-      },
-      slug: '4-chloropyrimidine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 13,
-      title: { rendered: '2-Methylpyridine' },
-      meta: {
-        product_name: '2-Methylpyridine',
-        end_product: 'Pharmaceutical synthesis',
-        cas_number: '109-06-8',
-        category: 'Intermediate',
-      },
-      slug: '2-methylpyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 14,
-      title: { rendered: '4-Methylpyridine' },
-      meta: {
-        product_name: '4-Methylpyridine',
-        end_product: 'Drug intermediates',
-        cas_number: '108-89-4',
-        category: 'Intermediate',
-      },
-      slug: '4-methylpyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 15,
-      title: { rendered: '3-Bromopyridine' },
-      meta: {
-        product_name: '3-Bromopyridine',
-        end_product: 'Pharmaceutical intermediates',
-        cas_number: '626-55-1',
-        category: 'Intermediate',
-      },
-      slug: '3-bromopyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 16,
-      title: { rendered: '2,6-Dimethylpyridine' },
-      meta: {
-        product_name: '2,6-Dimethylpyridine',
         end_product: 'Drug synthesis',
-        cas_number: '108-97-6',
-        category: 'Intermediate',
       },
-      slug: '2-6-dimethylpyridine',
+      slug: '1-Hydroxybenzotriazole Anhydrous (HOBT)',
       status: 'publish',
       type: 'product',
     },
     {
-      id: 17,
-      title: { rendered: '4-Formylpyridine' },
-      meta: {
-        product_name: '4-Formylpyridine',
-        end_product: 'Pharmaceutical intermediates',
-        cas_number: '872-85-3',
-        category: 'Intermediate',
+      id: 6,
+      title: {
+        rendered:
+          '2-Chloro-1,3-bis(dimethylamino)trimethinium hexafluorophosphate',
       },
-      slug: '4-formylpyridine',
+      meta: {
+        product_name:
+          '2-Chloro-1,3-bis(dimethylamino)trimethinium hexafluorophosphate',
+        cas_number: '249561-98-6',
+        category: 'Intermediate',
+        end_product: 'Etoricoxib',
+      },
+      slug: '2-chloro-1,3-bis(dimethylamino)trimethinium hexafluorophosphate',
       status: 'publish',
       type: 'product',
     },
     {
-      id: 18,
-      title: { rendered: '2-Cyanopyridine' },
-      meta: {
-        product_name: '2-Cyanopyridine',
-        end_product: 'Drug synthesis',
-        cas_number: '100-70-9',
-        category: 'Intermediate',
+      id: 7,
+      title: {
+        rendered:
+          '1-(6-Methylpyridin-3-yl)-2-(4-(methylsulfonyl)phenyl)ethenone',
       },
-      slug: '2-cyanopyridine',
+      meta: {
+        product_name:
+          '1-(6-Methylpyridin-3-yl)-2-(4-(methylsulfonyl)phenyl)ethenone',
+        cas_number: '221615-75-4',
+        category: 'Intermediate',
+        end_product: 'Etoricoxib',
+      },
+      slug: '1-(6-Methylpyridin-3-yl)-2-(4-(methylsulfonyl)phenyl)ethenone',
       status: 'publish',
       type: 'product',
     },
     {
-      id: 19,
-      title: { rendered: '3-Cyanopyridine' },
-      meta: {
-        product_name: '3-Cyanopyridine',
-        end_product: 'Pharmaceutical intermediates',
-        cas_number: '100-61-2',
-        category: 'Intermediate',
+      id: 8,
+      title: {
+        rendered: '4-(methyl sulfonyl) phenyl acetic acid',
       },
-      slug: '3-cyanopyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 20,
-      title: { rendered: '4-Pyridylcarboxaldehyde' },
       meta: {
-        product_name: '4-Pyridylcarboxaldehyde',
-        end_product: 'Drug synthesis',
-        cas_number: '872-85-3',
+        product_name: '4-(methyl sulfonyl) phenyl acetic acid',
+        cas_number: '90536-66-6',
         category: 'Intermediate',
+        end_product: 'Etoricoxib',
       },
-      slug: '4-pyridylcarboxaldehyde',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 21,
-      title: { rendered: '2-Aminomethylpyridine' },
-      meta: {
-        product_name: '2-Aminomethylpyridine',
-        end_product: 'Pharmaceutical intermediates',
-        cas_number: '3731-51-9',
-        category: 'Intermediate',
-      },
-      slug: '2-aminomethylpyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 22,
-      title: { rendered: '4-Aminomethylpyridine' },
-      meta: {
-        product_name: '4-Aminomethylpyridine',
-        end_product: 'Drug synthesis',
-        cas_number: '3731-52-0',
-        category: 'Intermediate',
-      },
-      slug: '4-aminomethylpyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 23,
-      title: { rendered: '2,4-Dimethylpyridine' },
-      meta: {
-        product_name: '2,4-Dimethylpyridine',
-        end_product: 'Pharmaceutical intermediates',
-        cas_number: '108-99-6',
-        category: 'Intermediate',
-      },
-      slug: '2-4-dimethylpyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 24,
-      title: { rendered: '3,5-Dimethylpyridine' },
-      meta: {
-        product_name: '3,5-Dimethylpyridine',
-        end_product: 'Drug synthesis',
-        cas_number: '591-22-0',
-        category: 'Intermediate',
-      },
-      slug: '3-5-dimethylpyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 25,
-      title: { rendered: '2-Ethylpyridine' },
-      meta: {
-        product_name: '2-Ethylpyridine',
-        end_product: 'Pharmaceutical intermediates',
-        cas_number: '104-90-5',
-        category: 'Intermediate',
-      },
-      slug: '2-ethylpyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 26,
-      title: { rendered: '4-Ethylpyridine' },
-      meta: {
-        product_name: '4-Ethylpyridine',
-        end_product: 'Drug synthesis',
-        cas_number: '536-75-4',
-        category: 'Intermediate',
-      },
-      slug: '4-ethylpyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 27,
-      title: { rendered: '2-Phenylpyridine' },
-      meta: {
-        product_name: '2-Phenylpyridine',
-        end_product: 'Pharmaceutical intermediates',
-        cas_number: '1008-88-5',
-        category: 'Intermediate',
-      },
-      slug: '2-phenylpyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 28,
-      title: { rendered: '4-Phenylpyridine' },
-      meta: {
-        product_name: '4-Phenylpyridine',
-        end_product: 'Drug synthesis',
-        cas_number: '947-61-9',
-        category: 'Intermediate',
-      },
-      slug: '4-phenylpyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 29,
-      title: { rendered: '2,3-Dichloropyridine' },
-      meta: {
-        product_name: '2,3-Dichloropyridine',
-        end_product: 'Pharmaceutical intermediates',
-        cas_number: '2402-79-1',
-        category: 'Intermediate',
-      },
-      slug: '2-3-dichloropyridine',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 30,
-      title: { rendered: '3,4-Dichloropyridine' },
-      meta: {
-        product_name: '3,4-Dichloropyridine',
-        end_product: 'Drug synthesis',
-        cas_number: '2457-50-5',
-        category: 'Intermediate',
-      },
-      slug: '3-4-dichloropyridine',
+      slug: '4-(methyl sulfonyl) phenyl acetic acid',
       status: 'publish',
       type: 'product',
     },
 
-    // Solvents (15 products)
-    {
-      id: 31,
-      title: { rendered: 'Acetone' },
-      meta: {
-        product_name: 'Acetone',
-        end_product: 'Solvent for various processes',
-        cas_number: '67-64-1',
-        category: 'Solvent',
-      },
-      slug: 'acetone',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 32,
-      title: { rendered: 'Methanol' },
-      meta: {
-        product_name: 'Methanol',
-        end_product: 'Industrial solvent',
-        cas_number: '67-56-1',
-        category: 'Solvent',
-      },
-      slug: 'methanol',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 33,
-      title: { rendered: 'Ethanol' },
-      meta: {
-        product_name: 'Ethanol',
-        end_product: 'Pharmaceutical grade solvent',
-        cas_number: '64-17-5',
-        category: 'Solvent',
-      },
-      slug: 'ethanol',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 34,
-      title: { rendered: 'Isopropanol' },
-      meta: {
-        product_name: 'Isopropanol',
-        end_product: 'Pharmaceutical solvent',
-        cas_number: '67-63-0',
-        category: 'Solvent',
-      },
-      slug: 'isopropanol',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 35,
-      title: { rendered: 'Butanol' },
-      meta: {
-        product_name: 'Butanol',
-        end_product: 'Industrial solvent',
-        cas_number: '71-36-3',
-        category: 'Solvent',
-      },
-      slug: 'butanol',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 36,
-      title: { rendered: 'Hexane' },
-      meta: {
-        product_name: 'Hexane',
-        end_product: 'Extraction solvent',
-        cas_number: '110-54-3',
-        category: 'Solvent',
-      },
-      slug: 'hexane',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 37,
-      title: { rendered: 'Heptane' },
-      meta: {
-        product_name: 'Heptane',
-        end_product: 'Pharmaceutical solvent',
-        cas_number: '142-82-5',
-        category: 'Solvent',
-      },
-      slug: 'heptane',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 38,
-      title: { rendered: 'Toluene' },
-      meta: {
-        product_name: 'Toluene',
-        end_product: 'Industrial solvent',
-        cas_number: '108-88-3',
-        category: 'Solvent',
-      },
-      slug: 'toluene',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 39,
-      title: { rendered: 'Xylene' },
-      meta: {
-        product_name: 'Xylene',
-        end_product: 'Pharmaceutical solvent',
-        cas_number: '1330-20-7',
-        category: 'Solvent',
-      },
-      slug: 'xylene',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 40,
-      title: { rendered: 'Dichloromethane' },
-      meta: {
-        product_name: 'Dichloromethane',
-        end_product: 'Extraction solvent',
-        cas_number: '75-09-2',
-        category: 'Solvent',
-      },
-      slug: 'dichloromethane',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 41,
-      title: { rendered: 'Chloroform' },
-      meta: {
-        product_name: 'Chloroform',
-        end_product: 'Laboratory solvent',
-        cas_number: '67-66-3',
-        category: 'Solvent',
-      },
-      slug: 'chloroform',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 42,
-      title: { rendered: 'Carbon Tetrachloride' },
-      meta: {
-        product_name: 'Carbon Tetrachloride',
-        end_product: 'Industrial solvent',
-        cas_number: '56-23-5',
-        category: 'Solvent',
-      },
-      slug: 'carbon-tetrachloride',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 43,
-      title: { rendered: 'Ethyl Acetate' },
-      meta: {
-        product_name: 'Ethyl Acetate',
-        end_product: 'Pharmaceutical solvent',
-        cas_number: '141-78-6',
-        category: 'Solvent',
-      },
-      slug: 'ethyl-acetate',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 44,
-      title: { rendered: 'Methyl Ethyl Ketone' },
-      meta: {
-        product_name: 'Methyl Ethyl Ketone',
-        end_product: 'Industrial solvent',
-        cas_number: '78-93-3',
-        category: 'Solvent',
-      },
-      slug: 'methyl-ethyl-ketone',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 45,
-      title: { rendered: 'Acetonitrile' },
-      meta: {
-        product_name: 'Acetonitrile',
-        end_product: 'Pharmaceutical solvent',
-        cas_number: '75-05-8',
-        category: 'Solvent',
-      },
-      slug: 'acetonitrile',
-      status: 'publish',
-      type: 'product',
-    },
+    // // Solvents (15 products)
+    // {
+    //   id: 31,
+    //   title: { rendered: 'Acetone' },
+    //   meta: {
+    //     product_name: 'Acetone',
+    //     end_product: 'Solvent for various processes',
+    //     cas_number: '67-64-1',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'acetone',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 32,
+    //   title: { rendered: 'Methanol' },
+    //   meta: {
+    //     product_name: 'Methanol',
+    //     end_product: 'Industrial solvent',
+    //     cas_number: '67-56-1',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'methanol',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 33,
+    //   title: { rendered: 'Ethanol' },
+    //   meta: {
+    //     product_name: 'Ethanol',
+    //     end_product: 'Pharmaceutical grade solvent',
+    //     cas_number: '64-17-5',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'ethanol',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 34,
+    //   title: { rendered: 'Isopropanol' },
+    //   meta: {
+    //     product_name: 'Isopropanol',
+    //     end_product: 'Pharmaceutical solvent',
+    //     cas_number: '67-63-0',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'isopropanol',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 35,
+    //   title: { rendered: 'Butanol' },
+    //   meta: {
+    //     product_name: 'Butanol',
+    //     end_product: 'Industrial solvent',
+    //     cas_number: '71-36-3',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'butanol',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 36,
+    //   title: { rendered: 'Hexane' },
+    //   meta: {
+    //     product_name: 'Hexane',
+    //     end_product: 'Extraction solvent',
+    //     cas_number: '110-54-3',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'hexane',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 37,
+    //   title: { rendered: 'Heptane' },
+    //   meta: {
+    //     product_name: 'Heptane',
+    //     end_product: 'Pharmaceutical solvent',
+    //     cas_number: '142-82-5',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'heptane',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 38,
+    //   title: { rendered: 'Toluene' },
+    //   meta: {
+    //     product_name: 'Toluene',
+    //     end_product: 'Industrial solvent',
+    //     cas_number: '108-88-3',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'toluene',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 39,
+    //   title: { rendered: 'Xylene' },
+    //   meta: {
+    //     product_name: 'Xylene',
+    //     end_product: 'Pharmaceutical solvent',
+    //     cas_number: '1330-20-7',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'xylene',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 40,
+    //   title: { rendered: 'Dichloromethane' },
+    //   meta: {
+    //     product_name: 'Dichloromethane',
+    //     end_product: 'Extraction solvent',
+    //     cas_number: '75-09-2',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'dichloromethane',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 41,
+    //   title: { rendered: 'Chloroform' },
+    //   meta: {
+    //     product_name: 'Chloroform',
+    //     end_product: 'Laboratory solvent',
+    //     cas_number: '67-66-3',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'chloroform',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 42,
+    //   title: { rendered: 'Carbon Tetrachloride' },
+    //   meta: {
+    //     product_name: 'Carbon Tetrachloride',
+    //     end_product: 'Industrial solvent',
+    //     cas_number: '56-23-5',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'carbon-tetrachloride',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 43,
+    //   title: { rendered: 'Ethyl Acetate' },
+    //   meta: {
+    //     product_name: 'Ethyl Acetate',
+    //     end_product: 'Pharmaceutical solvent',
+    //     cas_number: '141-78-6',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'ethyl-acetate',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 44,
+    //   title: { rendered: 'Methyl Ethyl Ketone' },
+    //   meta: {
+    //     product_name: 'Methyl Ethyl Ketone',
+    //     end_product: 'Industrial solvent',
+    //     cas_number: '78-93-3',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'methyl-ethyl-ketone',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 45,
+    //   title: { rendered: 'Acetonitrile' },
+    //   meta: {
+    //     product_name: 'Acetonitrile',
+    //     end_product: 'Pharmaceutical solvent',
+    //     cas_number: '75-05-8',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'acetonitrile',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
 
-    {
-      id: 56,
-      title: { rendered: 'N butyl Acetate' },
-      meta: {
-        product_name: 'N butyl Acetate',
-        end_product: 'Pharmaceutical / industrial solvent',
-        cas_number: '123-86-4',
-        category: 'Solvent',
-      },
-      slug: 'n-butyl-acetate',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 57,
-      title: { rendered: 'N propyl Acetate' },
-      meta: {
-        product_name: 'N propyl Acetate',
-        end_product: 'Pharmaceutical / industrial solvent',
-        cas_number: '109-60-4',
-        category: 'Solvent',
-      },
-      slug: 'n-propyl-acetate',
-      status: 'publish',
-      type: 'product',
-    },
+    // {
+    //   id: 56,
+    //   title: { rendered: 'N butyl Acetate' },
+    //   meta: {
+    //     product_name: 'N butyl Acetate',
+    //     end_product: 'Pharmaceutical / industrial solvent',
+    //     cas_number: '123-86-4',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'n-butyl-acetate',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
+    // {
+    //   id: 57,
+    //   title: { rendered: 'N propyl Acetate' },
+    //   meta: {
+    //     product_name: 'N propyl Acetate',
+    //     end_product: 'Pharmaceutical / industrial solvent',
+    //     cas_number: '109-60-4',
+    //     category: 'Solvent',
+    //   },
+    //   slug: 'n-propyl-acetate',
+    //   status: 'publish',
+    //   type: 'product',
+    // },
 
     // APIs (10 products)
     {
       id: 46,
-      title: { rendered: 'Paracetamol' },
+      title: { rendered: 'Racecadotril IP/BP/EP' },
       meta: {
-        product_name: 'Paracetamol',
-        end_product: 'Analgesic and antipyretic',
-        cas_number: '103-90-2',
+        product_name: 'Racecadotril IP/BP/EP',
+        end_product: '',
+        cas_number: '81110-73-8',
         category: 'API',
       },
-      slug: 'paracetamol',
+      slug: 'racecadotril-ip-bp-ep',
       status: 'publish',
       type: 'product',
     },
     {
       id: 47,
-      title: { rendered: 'Ibuprofen' },
+      title: { rendered: 'Diltiazem IP/EP/USP' },
       meta: {
-        product_name: 'Ibuprofen',
-        end_product: 'Nonsteroidal anti-inflammatory drug',
-        cas_number: '15687-27-1',
+        product_name: 'Diltiazem IP/EP/USP',
+        end_product: '',
+        cas_number: '33286-22-5',
         category: 'API',
       },
-      slug: 'ibuprofen',
+      slug: 'diltiazem-ip-ep-usp',
       status: 'publish',
       type: 'product',
     },
     {
       id: 48,
-      title: { rendered: 'Aspirin' },
+      title: { rendered: 'Tamsulosin Hydrochloride IH/USP' },
       meta: {
-        product_name: 'Aspirin',
-        end_product: 'Analgesic and anti-inflammatory',
-        cas_number: '50-78-2',
+        product_name: 'Tamsulosin Hydrochloride IH/USP',
+        end_product: '',
+        cas_number: '106463-17-6',
         category: 'API',
       },
-      slug: 'aspirin',
+      slug: 'tamsulosin-hydrochloride-ih-usp',
       status: 'publish',
       type: 'product',
     },
     {
       id: 49,
-      title: { rendered: 'Amoxicillin' },
+      title: { rendered: 'Dabigatran Etexilate Mesylate IH' },
       meta: {
-        product_name: 'Amoxicillin',
-        end_product: 'Antibiotic',
-        cas_number: '26787-78-0',
+        product_name: 'Dabigatran Etexilate Mesylate IH',
+        end_product: '',
+        cas_number: '872728-81-9',
         category: 'API',
       },
-      slug: 'amoxicillin',
+      slug: 'dabigatran-etexilate-mesylate-ih',
       status: 'publish',
       type: 'product',
     },
     {
       id: 50,
-      title: { rendered: 'Ciprofloxacin' },
+      title: { rendered: 'Linezolid  IH/IP/USP' },
       meta: {
-        product_name: 'Ciprofloxacin',
-        end_product: 'Antibiotic',
-        cas_number: '85721-33-1',
+        product_name: 'Linezolid  IH/IP/USP',
+        end_product: '',
+        cas_number: '165800-03-3',
         category: 'API',
       },
-      slug: 'ciprofloxacin',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 51,
-      title: { rendered: 'Metformin' },
-      meta: {
-        product_name: 'Metformin',
-        end_product: 'Antidiabetic drug',
-        cas_number: '657-24-9',
-        category: 'API',
-      },
-      slug: 'metformin',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 52,
-      title: { rendered: 'Omeprazole' },
-      meta: {
-        product_name: 'Omeprazole',
-        end_product: 'Proton pump inhibitor',
-        cas_number: '73590-58-6',
-        category: 'API',
-      },
-      slug: 'omeprazole',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 53,
-      title: { rendered: 'Atorvastatin' },
-      meta: {
-        product_name: 'Atorvastatin',
-        end_product: 'Cholesterol-lowering drug',
-        cas_number: '134523-00-5',
-        category: 'API',
-      },
-      slug: 'atorvastatin',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 54,
-      title: { rendered: 'Lisinopril' },
-      meta: {
-        product_name: 'Lisinopril',
-        end_product: 'ACE inhibitor',
-        cas_number: '83915-83-7',
-        category: 'API',
-      },
-      slug: 'lisinopril',
-      status: 'publish',
-      type: 'product',
-    },
-    {
-      id: 55,
-      title: { rendered: 'Simvastatin' },
-      meta: {
-        product_name: 'Simvastatin',
-        end_product: 'Cholesterol-lowering drug',
-        cas_number: '79902-63-9',
-        category: 'API',
-      },
-      slug: 'simvastatin',
+      slug: 'linezolid-ih-ip-usp',
       status: 'publish',
       type: 'product',
     },
   ]
 }
+
+// lib/wordpress.ts
+
+// import { Product, ProductCategory, CompanyInfo } from '@/types/product'
+
+// const WP_URL =
+//   process.env.NEXT_PUBLIC_WP_URL || 'https://products.swaroopahospitals.com'
+// export async function getProducts(): Promise<Product[]> {
+//   try {
+//     const res = await fetch(
+//       `${WP_URL}/wp-json/wp/v2/products?per_page=100&_embed`,
+//       {
+//         next: { revalidate: 120 },
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//       }
+//     )
+
+//     if (!res.ok) {
+//       console.error('Failed to fetch products:', res.status, res.statusText)
+//       return []
+//     }
+
+//     const products = await res.json()
+
+//     return products.map((product: any) => {
+//       const acf = product.acf || {}
+//       console.log('Product ACF Data:', {
+//         id: product.id,
+//         title: product.title?.rendered,
+//         acf: acf,
+//         cas_number: acf.cas_number,
+//       })
+
+//       return {
+//         id: product.id,
+//         title: {
+//           rendered: product.title?.rendered || '',
+//         },
+//         meta: {
+//           product_name: acf.product_name || product.title?.rendered || '',
+//           end_product: acf.end_product || 'N/A',
+//           cas_number: acf.cas_number || 'N/A', // Make sure this line is correct
+//           category: acf.category || 'Uncategorized',
+//         },
+//         slug: product.slug,
+//         status: product.status,
+//         type: product.type,
+//       }
+//     })
+//   } catch (error) {
+//     console.error('Error fetching products:', error)
+//     return []
+//   }
+// }
