@@ -22,15 +22,46 @@ export async function getProducts(): Promise<Product[]> {
       ;(fetchOptions as any).next = { revalidate: 120 }
     }
 
-    const res = await fetch(`${WP_URL}/wp-json/wp/v2/products`, fetchOptions)
+    let allProducts: any[] = []
+    let page = 1
+    let hasMore = true
+    const perPage = 100 // WordPress default max is 100
 
-    if (!res.ok) {
-      console.warn('Failed to fetch products from WordPress, using mock data')
-      return getMockProducts()
+    // Fetch all pages of products
+    while (hasMore) {
+      const res = await fetch(
+        `${WP_URL}/wp-json/wp/v2/products?per_page=${perPage}&page=${page}`,
+        fetchOptions
+      )
+
+      if (!res.ok) {
+        if (page === 1) {
+          // First page failed, use mock data
+          console.warn('Failed to fetch products from WordPress, using mock data')
+          return getMockProducts()
+        }
+        // No more pages
+        break
+      }
+
+      const products = await res.json()
+      allProducts = [...allProducts, ...products]
+
+      // Check if there are more pages
+      const totalPages = res.headers.get('X-WP-TotalPages')
+      if (totalPages && page >= parseInt(totalPages)) {
+        hasMore = false
+      } else if (products.length < perPage) {
+        // If we got fewer products than requested, we're on the last page
+        hasMore = false
+      } else {
+        page++
+      }
     }
 
-    const products = await res.json()
-    return products.map((product: any) => {
+    console.log(`Fetched ${allProducts.length} products from WordPress`)
+
+    return allProducts.map((product: any) => {
       const acf = product.acf || {}
       return {
         id: product.id,
@@ -40,7 +71,7 @@ export async function getProducts(): Promise<Product[]> {
         meta: {
           product_name: acf.product_name || product.title?.rendered || '',
           end_product: acf.end_product || 'N/A',
-          cas_number: acf.cas_number || 'N/A', // Make sure this line is correct
+          cas_number: acf.cas_number || 'N/A',
           category: acf.category || 'Uncategorized',
         },
         slug: product.slug,
@@ -92,20 +123,43 @@ export async function getProductsByCategory(
       ;(fetchOptions as any).next = { revalidate: 120 }
     }
 
-    const res = await fetch(
-      `${WP_URL}/wp-json/wp/v2/products?category=${category}`,
-      fetchOptions
-    )
+    let allProducts: any[] = []
+    let page = 1
+    let hasMore = true
+    const perPage = 100
 
-    if (!res.ok) {
-      console.warn(
-        'Failed to fetch products by category, returning empty array'
+    // Fetch all pages of products for this category
+    while (hasMore) {
+      const res = await fetch(
+        `${WP_URL}/wp-json/wp/v2/products?category=${category}&per_page=${perPage}&page=${page}`,
+        fetchOptions
       )
-      return []
+
+      if (!res.ok) {
+        if (page === 1) {
+          console.warn(
+            'Failed to fetch products by category, returning empty array'
+          )
+          return []
+        }
+        break
+      }
+
+      const products = await res.json()
+      allProducts = [...allProducts, ...products]
+
+      // Check if there are more pages
+      const totalPages = res.headers.get('X-WP-TotalPages')
+      if (totalPages && page >= parseInt(totalPages)) {
+        hasMore = false
+      } else if (products.length < perPage) {
+        hasMore = false
+      } else {
+        page++
+      }
     }
 
-    const products = await res.json()
-    return products.map((product: any) => ({
+    return allProducts.map((product: any) => ({
       id: product.id,
       title: {
         rendered: product.title.rendered,

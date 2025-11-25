@@ -52,6 +52,21 @@
   --color-bg: #F5F7FA;
   --color-text: #222222;
   
+  /* Category Colors - Light Mode */
+  --category-solvent-bg: oklch(0.93 0.039 238.764);        /* blue-100 equivalent */
+  --category-solvent-text: oklch(0.508 0.139 238.764);     /* blue-600/800 equivalent */
+  --category-intermediate-bg: oklch(0.93 0.039 142.495);   /* green-100 equivalent */
+  --category-intermediate-text: oklch(0.493 0.117 142.495); /* green-600/800 equivalent */
+  --category-api-bg: oklch(0.93 0.039 308.322);            /* purple-100 equivalent */
+  --category-api-text: oklch(0.508 0.139 308.322);         /* purple-600/800 equivalent */
+  --category-default-bg: oklch(0.93 0.005 286.375);        /* gray-100 equivalent */
+  --category-default-text: oklch(0.446 0.005 286.375);     /* gray-800 equivalent */
+  
+  /* Success/Error Colors */
+  --color-success-bg: oklch(0.97 0.02 142.495);            /* green-50 equivalent */
+  --color-success-border: oklch(0.88 0.06 142.495);        /* green-200 equivalent */
+  --color-success-text: oklch(0.493 0.117 142.495);        /* green-600 equivalent */
+  
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -86,6 +101,20 @@
 }
 
 .dark {
+  /* Category Colors - Dark Mode */
+  --category-solvent-bg: oklch(0.25 0.06 238.764);
+  --category-solvent-text: oklch(0.7 0.12 238.764);
+  --category-intermediate-bg: oklch(0.25 0.06 142.495);
+  --category-intermediate-text: oklch(0.7 0.12 142.495);
+  --category-api-bg: oklch(0.25 0.06 308.322);
+  --category-api-text: oklch(0.7 0.12 308.322);
+  --category-default-bg: oklch(0.25 0.01 286.375);
+  --category-default-text: oklch(0.7 0.01 286.375);
+  
+  --color-success-bg: oklch(0.2 0.04 142.495);
+  --color-success-border: oklch(0.35 0.08 142.495);
+  --color-success-text: oklch(0.7 0.12 142.495);
+  
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);

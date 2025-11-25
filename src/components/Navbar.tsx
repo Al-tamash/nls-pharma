@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Menu, Phone, Mail } from 'lucide-react'
@@ -22,10 +23,13 @@ export default function Navbar() {
         <div className='flex h-16 md:h-20 lg:h-24 items-center justify-between'>
           {/* Logo */}
           <Link href='/' className='flex items-center space-x-4'>
-            <img
+            <Image
               src='/nlslogo4.png'
               alt='Noble Life Sciences Logo'
+              width={80}
+              height={80}
               className='h-10 w-10 sm:h-14 sm:w-14 md:h-20 md:w-20 object-contain'
+              priority
             />
             <div className='flex flex-col'>
               <h1 className='text-lg font-semibold text-foreground sm:text-2xl'>
@@ -76,10 +80,13 @@ export default function Navbar() {
             <SheetContent side='right' className='w-[300px] sm:w-[400px]'>
               <div className='flex flex-col space-y-6 mt-6'>
                 <Link href='/' className='flex items-center space-x-3'>
-                  <img
+                  <Image
                     src='/nlslogo4.png'
                     alt='Noble Life Sciences Logo'
+                    width={48}
+                    height={48}
                     className='h-12 w-12 object-contain'
+                    priority
                   />
                   <div>
                     <h1 className='text-xl font-semibold text-foreground'>

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   Phone,
   Mail,
@@ -19,10 +20,13 @@ export default function Footer() {
           {/* Company Info */}
           <div className='space-y-4'>
             <div className='flex items-center space-x-4'>
-              <img
+              <Image
                 src='/nlslogo4.png'
                 alt='Noble Life Sciences Logo'
-                className='h-16 w-16 object-contain'
+                width={64}
+                height={64}
+                className='object-contain'
+                priority
               />
               <h3 className='text-2xl font-bold text-primary-foreground'>
                 Noble Life Sciences

@@ -4,7 +4,7 @@ const WP_URL = process.env.NEXT_PUBLIC_WP_URL || 'https://cms.noblels.com'
 
 export async function getProducts(): Promise<Product[]> {
   try {
-    const res = await fetch(`${WP_URL}/wp-json/wp/v2/products`, {
+    const res = await fetch(`${WP_URL}/wp-json/wp/v2/products?per_page=100`, {
       next: { revalidate: 120 },
       headers: {
         'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export async function getProductsByCategory(
 ): Promise<Product[]> {
   try {
     const res = await fetch(
-      `${WP_URL}/wp-json/wp/v2/products?category=${category}`,
+      `${WP_URL}/wp-json/wp/v2/products?category=${category}&per_page=100`,
       {
         next: { revalidate: 120 },
       }
@@ -93,26 +93,42 @@ export async function getCompanyInfo(): Promise<CompanyInfo> {
   }
 }
 
-export function getProductCategories(): ProductCategory[] {
+export function getProductCategories(products?: Product[]): ProductCategory[] {
+  // Calculate actual counts if products are provided
+  const counts = products ? {
+    solvents: products.filter(p => 
+      p.meta.category.toLowerCase() === 'solvent' || 
+      p.meta.category.toLowerCase() === 'solvents'
+    ).length,
+    intermediates: products.filter(p => 
+      p.meta.category.toLowerCase() === 'intermediate' || 
+      p.meta.category.toLowerCase() === 'intermediates'
+    ).length,
+    apis: products.filter(p => 
+      p.meta.category.toLowerCase() === 'api' || 
+      p.meta.category.toLowerCase() === 'apis'
+    ).length,
+  } : { solvents: 0, intermediates: 0, apis: 0 };
+
   return [
     {
       name: 'Solvents',
       slug: 'solvents',
       description:
         'High-quality chemical solvents for pharmaceutical applications',
-      count: 15,
+      count: counts.solvents,
     },
     {
       name: 'Intermediates',
       slug: 'intermediates',
       description: 'API intermediates for pharmaceutical manufacturing',
-      count: 25,
+      count: counts.intermediates,
     },
     {
       name: 'APIs',
       slug: 'apis',
       description: 'Active Pharmaceutical Ingredients',
-      count: 10,
+      count: counts.apis,
     },
   ]
 }

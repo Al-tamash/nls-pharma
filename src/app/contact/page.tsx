@@ -292,8 +292,8 @@ export default function ContactPage() {
                       </div>
 
                       {submitStatus === 'success' && (
-                        <div className='p-4 bg-green-50 border border-green-200 rounded-md'>
-                          <p className='text-sm text-green-800'>
+                        <div className='p-4 bg-success border border-success-border rounded-md'>
+                          <p className='text-sm text-success-text'>
                             Thank you for your message! We'll get back to you
                             soon.
                           </p>
@@ -301,8 +301,8 @@ export default function ContactPage() {
                       )}
 
                       {submitStatus === 'error' && (
-                        <div className='p-4 bg-red-50 border border-red-200 rounded-md'>
-                          <p className='text-sm text-red-800'>
+                        <div className='p-4 bg-destructive/10 border border-destructive/30 rounded-md'>
+                          <p className='text-sm text-destructive'>
                             Something went wrong. Please try again or contact us
                             directly.
                           </p>

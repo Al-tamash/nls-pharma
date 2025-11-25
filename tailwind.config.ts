@@ -50,6 +50,27 @@ const config: Config = {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
+  			},
+  			'category-solvent': {
+  				DEFAULT: 'var(--category-solvent-bg)',
+  				text: 'var(--category-solvent-text)'
+  			},
+  			'category-intermediate': {
+  				DEFAULT: 'var(--category-intermediate-bg)',
+  				text: 'var(--category-intermediate-text)'
+  			},
+  			'category-api': {
+  				DEFAULT: 'var(--category-api-bg)',
+  				text: 'var(--category-api-text)'
+  			},
+  			'category-default': {
+  				DEFAULT: 'var(--category-default-bg)',
+  				text: 'var(--category-default-text)'
+  			},
+  			success: {
+  				DEFAULT: 'var(--color-success-bg)',
+  				border: 'var(--color-success-border)',
+  				text: 'var(--color-success-text)'
   			}
   		},
   		borderRadius: {

@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
 import {
   Card,
@@ -163,9 +165,11 @@ export default function AboutPage() {
 
               <div className='relative'>
                 <div className='aspect-square rounded-2xl overflow-hidden'>
-                  <img
+                  <Image
                     src='/quality-lab.jpg'
                     alt='Quality Control Laboratory'
+                    width={800}
+                    height={800}
                     className='w-full h-full object-cover'
                   />
                 </div>
@@ -349,10 +353,10 @@ export default function AboutPage() {
             </p>
             <div className='flex flex-col sm:flex-row gap-4 justify-center'>
               <Button size='lg' variant='secondary' asChild>
-                <a href='/products'>
+                <Link href='/products'>
                   Explore Products
                   <ArrowRight className='ml-2 h-4 w-4' />
-                </a>
+                </Link>
               </Button>
               <Button
                 size='lg'
@@ -360,7 +364,7 @@ export default function AboutPage() {
                 className='bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary'
                 asChild
               >
-                <a href='/contact'>Get in Touch</a>
+                <Link href='/contact'>Get in Touch</Link>
               </Button>
             </div>
           </div>
