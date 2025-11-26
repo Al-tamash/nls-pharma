@@ -18,27 +18,19 @@ export default function Navbar() {
   ]
 
   return (
-    <header className='sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60'>
+    <header className='sticky top-0 z-50 w-full border-b bg-white'>
       <div className='container mx-auto px-4'>
         <div className='flex h-16 md:h-20 lg:h-24 items-center justify-between'>
           {/* Logo */}
-          <Link href='/' className='flex items-center space-x-4'>
+          <Link href='/' className='flex items-center'>
             <Image
               src='/nlslogo4.png'
               alt='Noble Life Sciences Logo'
-              width={80}
-              height={80}
-              className='h-10 w-10 sm:h-14 sm:w-14 md:h-20 md:w-20 object-contain'
+              width={100}
+              height={100}
+              className='h-12 w-auto sm:h-16 md:h-20 object-contain hover:opacity-90 transition-opacity'
               priority
             />
-            <div className='flex flex-col'>
-              <h1 className='text-lg font-semibold text-foreground sm:text-2xl'>
-                Noble Life Sciences
-              </h1>
-              <p className='text-xs text-muted-foreground sm:text-base'>
-                Pharmaceutical Excellence
-              </p>
-            </div>
           </Link>
 
           {/* Desktop Navigation */}
