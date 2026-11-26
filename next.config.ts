@@ -12,13 +12,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   reactStrictMode: true, // Re-enable React Strict Mode for better development practices
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
 }
 
 export default nextConfig

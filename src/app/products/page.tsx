@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect, useMemo, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -13,29 +13,39 @@ import { ProductTable } from '@/components/products/ProductTable'
 
 function ProductsContent() {
   const searchParams = useSearchParams()
+  const categoryParam = searchParams.get('category')
+  const [previousCategoryParam, setPreviousCategoryParam] = useState(categoryParam)
   const [products, setProducts] = useState<Product[]>([])
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<ProductCategory[]>([])
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [searchTerm, setSearch] = useState('')
+  const [selectedCategory, setCategory] = useState(categoryParam || 'all')
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 20
 
-  // Read category from URL on initial load
-  useEffect(() => {
-    const categoryParam = searchParams.get('category')
+  if (categoryParam !== previousCategoryParam) {
+    setPreviousCategoryParam(categoryParam)
     if (categoryParam) {
-      setSelectedCategory(categoryParam)
+      setCategory(categoryParam)
+      setCurrentPage(1)
     }
-  }, [searchParams])
+  }
+
+  const setSearchTerm = (value: string) => {
+    setSearch(value)
+    setCurrentPage(1)
+  }
+
+  const setSelectedCategory = (value: string) => {
+    setCategory(value)
+    setCurrentPage(1)
+  }
 
   useEffect(() => {
     async function fetchData() {
       try {
         const productsData = await getProducts()
         setProducts(productsData)
-        setFilteredProducts(productsData)
 
         const categoriesData = getProductCategories(productsData)
         setCategories(categoriesData)
@@ -48,7 +58,7 @@ function ProductsContent() {
     fetchData()
   }, [])
 
-  useEffect(() => {
+  const filteredProducts = useMemo(() => {
     let filtered = products
 
     if (selectedCategory !== 'all') {
@@ -88,8 +98,7 @@ function ProductsContent() {
       )
     }
 
-    setFilteredProducts(filtered)
-    setCurrentPage(1)
+    return filtered
   }, [products, searchTerm, selectedCategory])
 
   const exportToCSV = () => {

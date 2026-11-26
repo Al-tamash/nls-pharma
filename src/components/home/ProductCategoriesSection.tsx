@@ -6,8 +6,12 @@ import { CategoryCard } from '@/components/shared/CategoryCard'
 import { PRODUCT_CATEGORIES } from '@/lib/constants/categories'
 import { getProducts, getProductCategories } from '@/lib/wordpress'
 
+type Category = Omit<(typeof PRODUCT_CATEGORIES)[number], 'count'> & {
+  count: string
+}
+
 export function ProductCategoriesSection() {
-  const [categories, setCategories] = useState(PRODUCT_CATEGORIES)
+  const [categories, setCategories] = useState<readonly Category[]>(PRODUCT_CATEGORIES)
 
   useEffect(() => {
     async function fetchCounts() {
